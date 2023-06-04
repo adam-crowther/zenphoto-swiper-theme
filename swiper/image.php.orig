@@ -1,0 +1,238 @@
+<?php
+// force UTF-8 Ø
+
+if (!defined('WEBPATH'))
+	die();
+?>
+<!DOCTYPE html>
+<html<?php printLangAttribute(); ?>>
+	<head>
+		<meta charset="<?php echo LOCAL_CHARSET; ?>">
+		<?php zp_apply_filter('theme_head'); ?>
+		<?php printHeadTitle(); ?>
+		<link rel="stylesheet" href="<?php echo pathurlencode($zenCSS); ?>" type="text/css" />
+		<link rel="stylesheet" href="<?php echo pathurlencode(dirname(dirname($zenCSS))); ?>/common.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo pathurlencode(dirname(dirname($zenCSS))); ?>/swiper-bundle.css" type="text/css" />
+        <script type="application/javascript" src="<?php echo pathurlencode(dirname(dirname($zenCSS))); ?>/swiper-bundle.js" ></script>
+		<?php if (zp_has_filter('theme_head', 'colorbox::css')) { ?>
+			<script type="text/javascript">
+				// <!-- <![CDATA[
+				$(document).ready(function() {
+					$(".fullimage").colorbox({
+						maxWidth: "98%",
+						maxHeight: "98%",
+						photo: true,
+						close: '<?php echo gettext("close"); ?>',
+						onComplete: function () {
+							$(window).resize(resizeColorBoxImage);
+						}
+					});
+				});
+				// ]]> -->
+			</script>
+		<?php } ?>
+		<?php if (class_exists('RSS')) printRSSHeaderLink('Gallery', gettext('Gallery RSS')); ?>
+	</head>
+	<body>
+		<?php 
+		zp_apply_filter('theme_body_open'); 
+		
+		$images = $_zp_current_album->getImages(); 
+
+		$currentImage = $_zp_current_image->getFileName();
+		$initialIndex = 0;
+		foreach ($images as $i):
+			if ($i == $currentImage)
+				break;
+			$initialIndex++;
+		endforeach;
+		?>
+		<div id="main">
+			<div class="gallery-container">
+				<div class="swiper-wrapper">
+				<?php
+				    $index = 0;
+					foreach ($images as $i):
+					    $index++;
+						$image = newImage($_zp_current_album, $i);
+						makeImageCurrent($image);
+				?>
+				<div class="swiper-slide" id="<?=$_zp_current_image->getFileName()?>">
+					<div id="gallerytitle">
+						<?php
+						if(!zp_loggedin() && $loginlink = zp_apply_filter('login_link', getCustomPageURL('password'))) {
+							$logintext = gettext('Login');
+							$currentUrl = $_zp_current_image->getLink();
+						?>
+							<div id="login">
+								<input type="button" 
+										class="button buttons"
+										onclick="location.href='<?= $loginlink . '?from=' . $currentUrl; ?>'" 
+										value="<?= $logintext?>" />
+							</div>
+						<?php 
+							} 
+
+							$timelinetext = gettext('Timeline');
+							$timelinelink = getCustomPageURL('archive');
+						?>
+							<div id="timeline">
+								<input type="button" 
+										class="button buttons"
+										onclick="location.href='<?= $timelinelink?>'" 
+										value="<?= $timelinetext?>" />
+							</div>
+						<?php 
+							if (getOption('Allow_search')) {
+								printSearchForm(); 
+							}
+						?>
+
+						<h2>
+							<span>
+								<?php
+								printHomeLink('', ' | ');
+								printGalleryIndexURL(' | ', getGalleryTitle());
+								printParentBreadcrumb("", " | ", " | ");
+								printAlbumBreadcrumb("", " | ");
+								?>
+							</span>
+							<?php printImageTitle(); ?>
+						</h2>
+					</div>
+					<!-- The Image -->
+					<?php
+						$width = getDefaultWidth();
+						$height = getDefaultHeight();
+						$imageTitle= html_encodeTagged(getImageTitle());
+						$defaultSizeImage = getSizedImageURL(getOption('image_size'));
+						
+						html_pathurlencode(getDefaultSizedImage());
+					?>
+					<div id="image">
+						<strong>
+							<?php
+							if (isImagePhoto() && isset($_zp_current_admin_obj)) {
+								$fullimage = getFullImageURL();
+							} else {
+								$fullimage = NULL;
+							}
+							if (!empty($fullimage)) {
+								?>
+								<a href="<?= html_encode(pathurlencode($fullimage)) ?>" title="<?php printBareImageTitle(); ?>" class="fullimage" target="_blank">
+									<?php
+								}
+								?>
+									<img data-src="<?= html_encode(pathurlencode($defaultSizeImage)) ?>"
+										 class="swiper-lazy"
+										 alt="<?= $imageTitle ?>" 
+										 title="<?= $imageTitle ?>" 
+										 width="<?= $width ?>" 
+										 height="<?= $height ?>"/>
+								<div class="swiper-lazy-preloader"></div>
+								<?php
+								if (!empty($fullimage)) {
+									?>
+								</a>
+								<?php
+							}
+							?>
+						</strong>
+					</div>
+					<div id="narrow" class="image_description">
+						<?php printImageDesc(); ?>
+						<hr/>
+						<?php
+						If (function_exists('printAddToFavorites'))
+							printAddToFavorites($image);
+						@call_user_func('printSlideShowLink');
+						$metadata_toggle_link_class = "metadata_link_" . $index;
+						$metadata_class = "metadata_" . $index;
+						$title = gettext('Image Info');
+
+						if (getImageMetaData()) {
+							?>
+							<span id="exif_link" class="metadata_title">
+								<a href="#" class="<?= $metadata_toggle_link_class; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+							</span>
+							<div class="<?= $metadata_class ?>" style="display: none;">
+							    <?php printImageMetadata('', false); ?>
+							</div>
+							<br class="clearall" />
+							<script type="application/javascript">
+								// <!-- <![CDATA[
+								$(document).ready(function () {
+									$(<?= '".' . $metadata_toggle_link_class . '"'?>).click(function(event) { 
+										event.preventDefault(); $(".<?= $metadata_class; ?>").toggle(); 
+									}); 
+								});
+								// ]]> -->				
+							</script>
+
+							<?php
+						}
+						printTags('links', gettext('<strong>Tags:</strong>') . ' ', 'taglist', '');
+						?>
+						<br class="clearall" />
+
+						<?php
+						@call_user_func('printOpenStreetMap');
+						@call_user_func('printGoogleMap');
+						@call_user_func('printRating');
+						@call_user_func('printCommentForm');
+						?>
+					</div>
+				</div>
+				<?php
+					endforeach;
+				?>
+				</div>
+				
+			</div>			
+		<?php
+			$modal_class = '';
+		?> 
+
+    <script type="application/javascript">
+		// <!-- <![CDATA[
+        $(document).ready(function () {
+
+            //initialize swiper when document ready
+            gallerySwiper = new Swiper('.gallery-container', {
+                slidesPerView: '1',
+                initialSlide: <?= $initialIndex ?>,
+                keyboard: {
+                    enabled: true,
+                    onlyInViewport: false,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+			    pagination: {
+					el: '.gallery-pagination',
+					type: 'fraction',
+				},
+                preloadImages: false,
+                lazy: {
+					enabled: true,
+					loadPrevNext: true
+				}
+            });
+			gallerySwiper.on('slideChange', function () {
+			   filename = $(gallerySwiper.slides[gallerySwiper.activeIndex]).attr('id');
+			   window.history.pushState({href: filename}, '', filename);
+			});
+			gallerySwiper.on('lazyImageReady', function (swiper, slideEl, imageEl) {
+			   $(imageEl).css({visibility: 'visible'});
+			});
+						
+
+		});
+
+		// ]]> -->				
+    </script>
+
+    <?php include 'inc-footer.php'; ?>
+	</body>
+</html>
