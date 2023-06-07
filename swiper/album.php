@@ -121,7 +121,7 @@ if (!defined('WEBPATH'))
 					rowHeight: <?= $rowheight ?>,
 					lastRow: 'nojustify',
 					margins: 55,
-					waitThumbnailsLoad: true,
+					waitThumbnailsLoad: false,
                     norewind: true
 
 				});
