@@ -189,7 +189,18 @@
     var $caption = $entry.find('> .jg-caption');
     return $caption.length === 0 ? null : $caption;
   };
-  
+
+  /**
+   * Revert the image src to the default value.
+   */
+  JustifiedGallery.prototype.resetImgSrc = function ($img) {
+    if ($img.data('jg.originalSrcLoc') === 'src') {
+      $img.attr('src', $img.data('jg.originalSrc'));
+    } else {
+      $img.attr('src', '');
+    }
+  };
+
   /**
    * Display the entry
    *
@@ -219,7 +230,12 @@
         imageSrc = this.newSrc(imageSrc, imgWidth, imgHeight, $image[0]);
   
         $image.one('error', function () {
-           this.resetImgSrc($image); //revert to the original thumbnail
+           //revert to the original thumbnail
+          if ($image.data('jg.originalSrcLoc') === 'src') {
+            $image.attr('src', $image.data('jg.originalSrc'));
+          } else {
+            $image.attr('src', '');
+          }
         });
   
         var loadNewImage = function () {
@@ -713,18 +729,7 @@
       return filteredArr;
     }
   };
-  
-  /**
-   * Revert the image src to the default value.
-   */
-  JustifiedGallery.prototype.resetImgSrc = function ($img) {
-    if ($img.data('jg.originalSrcLoc') === 'src') {
-      $img.attr('src', $img.data('jg.originalSrc'));
-    } else {
-      $img.attr('src', '');
-    }
-  };
-  
+
   /**
    * Destroy the Justified Gallery instance.
    *

@@ -688,11 +688,11 @@ clear: right !important;
 ------------------------------ */
 
 div.passepartout {
-    border-color: #222222;
+    border-color: #9f9f9f;
 }
 
 .justified-gallery > div {
-    background-color: #222222;
+    background-color: #9f9f9f;
 }
 
 .justified-gallery > .jg-spinner {

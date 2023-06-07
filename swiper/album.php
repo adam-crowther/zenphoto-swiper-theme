@@ -85,7 +85,7 @@ if (!defined('WEBPATH'))
 						   <?php printAlbumThumbImage(getAnnotatedAlbumTitle()); ?>
 						</a>
 						<div style="position: absolute; color: rgba(0, 0, 0, 0);">
-							<?php printAnnotatedAlbumTitle(); ?>
+							<?php printAnnotatedAlbumTitle(); printCurrentPageAppendix(); ?>
 						</div>
 					</div>
 				<?php endwhile; ?>
@@ -106,11 +106,11 @@ if (!defined('WEBPATH'))
 				printPageListWithNav("« " . gettext("prev"), gettext("next") . " »");
 				if (function_exists('printAddToFavorites')) printAddToFavorites($_zp_current_album);
 				printTags('links', gettext('<strong>Tags:</strong>') . ' ', 'taglist', '');
-				@call_user_func('printOpenStreetMap');
-				@call_user_func('printGoogleMap');
-				@call_user_func('printSlideShowLink');
-				@call_user_func('printRating');
-				@call_user_func('printCommentForm');
+				callUserFunction('openStreetMap::printOpenStreetMap');
+				callUserFunction('printGoogleMap');
+				callUserFunction('printSlideShowLink');
+				callUserFunction('printRating');
+				callUserFunction('printCommentForm');
 
 				$thumbobj = $_zp_current_album->getAlbumThumbImage();
 				$sizes = getSizeDefaultThumb($thumbobj);
@@ -121,7 +121,9 @@ if (!defined('WEBPATH'))
 					rowHeight: <?= $rowheight ?>,
 					lastRow: 'nojustify',
 					margins: 55,
-					waitThumbnailsLoad: false
+					waitThumbnailsLoad: true,
+                    norewind: true
+
 				});
 			</script>		
 		</div>

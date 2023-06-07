@@ -61,7 +61,8 @@ if (!defined('WEBPATH'))
 				<h2><?php
 					printHomeLink('', ' | ');
 					printGalleryTitle();
-					?></h2>
+                    printCurrentPageAppendix();
+                ?></h2>
 			</div>
 			<div id="padbox">
 				<?php printGalleryDesc(); ?>
