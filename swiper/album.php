@@ -125,7 +125,7 @@ if (!defined('WEBPATH'))
         const passepartouts = thumbnails.slice(firstThumb, thumbCount).map(createPassepartout).join('');
 
         function calculateRowCount(rowHeight) {
-            const viewportHeight = $(window).height() - justifiedGalleryElement.position().top;
+            const viewportHeight = $(window).outerHeight() - justifiedGalleryElement.position().top;
             return Math.ceil(viewportHeight / rowHeight);
         }
 
