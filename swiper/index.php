@@ -65,10 +65,14 @@ if (!defined('WEBPATH'))
                 ?></h2>
 			</div>
 			<div id="padbox">
-				<?php printGalleryDesc(); ?>
+				<?php
+                    printGalleryDesc();
+                    $passepartoutBorder = getOption('Passepartout_border');
+                    $galleryMargin = getOption('Gallery_margin') - $passepartoutBorder * 2;
+                ?>
 				<div id="albums">
 					<?php while (next_album()): ?>
-						<div class="album passepartout with-description">
+						<div class="album passepartout with-description" style="border-width:<?= $passepartoutBorder ?>px; margin-right: <?= $galleryMargin ?>px">
 							<div class="thumb">
 								<a href="<?php echo html_encode(getAlbumURL()); ?>" 
 								   title="<?php echo gettext('View album:'); ?> <?php printAnnotatedAlbumTitle(); ?>">

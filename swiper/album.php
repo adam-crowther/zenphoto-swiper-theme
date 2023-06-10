@@ -116,7 +116,7 @@ if (!defined('WEBPATH'))
 
         let justifiedGalleryElement = $("#justified-gallery");
 
-        const margin = 65;
+        const margin = <?= getOption('Gallery_margin') ?>;
         const rowHeight = <?= $rowheight ?>;
         const rowCount = calculateRowCount(rowHeight);
         const thumbsPerRow = calculateThumbsPerRow(margin);
@@ -160,7 +160,7 @@ if (!defined('WEBPATH'))
 
         function createAlbumPassepartout(thumb) {
             return `
-                <div class="passepartout">
+                <div class="passepartout" style="border-width:<?= getOption('Passepartout_border')?>px">
                     <a href="${thumb.albumUrl}"
                        title="View album: ${thumb.albumTitle}">
                        <img src="${thumb.thumbUrl}" width="${thumb.thumbWidth}" height="${thumb.thumbHeight}" alt="${thumb.albumTitle}" loading="lazy"/>

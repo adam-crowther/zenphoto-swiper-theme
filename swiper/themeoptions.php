@@ -17,6 +17,8 @@ class ThemeOptions {
 		$me = basename(dirname(__FILE__));
 		setThemeOptionDefault('Allow_search', true);
 		setThemeOptionDefault('Theme_colors', 'light');
+		setThemeOptionDefault('Passepartout_border', 20);
+		setThemeOptionDefault('Gallery_margin', 55);
 		setThemeOptionDefault('albums_per_page', 10000);
 		setThemeOptionDefault('albums_per_row', 10000);
 		setThemeOptionDefault('images_per_page', 10000);
@@ -48,7 +50,15 @@ class ThemeOptions {
 				gettext('Theme colors') => array(
 						'key' => 'Theme_colors',
 						'type' => OPTION_TYPE_CUSTOM,
-						'desc' => gettext('Select the colors of the theme'))
+						'desc' => gettext('Select the colors of the theme.')),
+                gettext('Passepartout border width') => array(
+                    'key' => 'Passepartout_border',
+                    'type' => OPTION_TYPE_CUSTOM,
+                    'desc' => gettext('The width of the passepartout around the album thumbnails in px.')),
+                gettext('Gallery margin') => array(
+                    'key' => 'Gallery_margin',
+                    'type' => OPTION_TYPE_CUSTOM,
+                    'desc' => gettext('The width of the margins between the album thumbnails in px.'))
 		);
 	}
 
@@ -63,8 +73,12 @@ class ThemeOptions {
 			generateListFromArray(array($currentValue), $themecolors, false, false);
 			echo "</select>\n";
 		}
+		if ($option == 'Passepartout_border') {
+            echo "<input type='text' size='3' id='EF_passepartout_border' name='$option' value='$currentValue'>\n";
+		}
+		if ($option == 'Gallery_margin') {
+            echo "<input type='text' size='3'  id='EF_gallery_margin' name='$option' value='$currentValue'>\n";
+		}
 	}
-
 }
-
 ?>
