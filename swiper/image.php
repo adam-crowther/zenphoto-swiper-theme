@@ -93,8 +93,9 @@ if (!defined('WEBPATH'))
 									. 'bareImageTitle: \'' . html_encode(getBareImageTitle()) . '\', '
 									. 'width: ' . getDefaultWidth() . ', '
 									. 'height: ' . getDefaultHeight() . ', '
-									. 'defaultSizeImageUrl: \'' . html_encode(pathurlencode(getSizedImageURL(getOption('image_size')))) . '\', '
-									. 'fullSizeImageUrl: ' . (isImagePhoto() && isset($_zp_current_admin_obj) ? '\'' . html_encode(pathurlencode(getFullImageURL())) . '\'' : 'null') . ', '
+									. 'slideUrl: \'' . html_pathurlencode(getImageURL()) . '\', '
+									. 'defaultSizeImageUrl: \'' . pathurlencode(getSizedImageURL(getOption('image_size'))) . '\', '
+									. 'fullSizeImageUrl: ' . (isImagePhoto() && isset($_zp_current_admin_obj) ? '\'' . html_pathurlencode(getFullImageURL()) . '\'' : 'null') . ', '
 									. 'imageDesc: `' . html_encodeTagged(getImageDesc()) . '`, '
 									. 'metadata: ' . $imageMetaData . ', '
 								. ' }, '
@@ -113,9 +114,9 @@ if (!defined('WEBPATH'))
             });
 			
 			function slideChangeTransitionEnd() {
-			    filename = $('.swiper-slide-active').attr('id');
-			    if (filename) {
-				    window.history.pushState({href: filename}, '', filename);
+                let slideUrl = $('.swiper-slide-active').attr('url');
+			    if (slideUrl) {
+				    window.history.pushState({href: slideUrl}, '', slideUrl);
 			    }
 			    setupMetadataLink();			   
 			}
@@ -135,13 +136,13 @@ if (!defined('WEBPATH'))
 				
 			function createSlide(slide, index) {
 				var output = `
-					<div class="swiper-slide" id="${slide.fileName}">
+					<div class="swiper-slide" id="${slide.fileName}" url="${slide.slideUrl}">
 						<div id="gallerytitle">
 						
 						<?php
 						if(!zp_loggedin() && $loginlink = zp_apply_filter('login_link', getCustomPageURL('password'))) {
 							$logintext = gettext('Login');
-							$currentUrl = $_zp_current_image->getLink();
+							$currentUrl = html_pathurlencode(getImageURL());
 						?>
 							<div id="login">
 								<input type="button" 
@@ -187,6 +188,7 @@ if (!defined('WEBPATH'))
 										 title="${slide.imageTitle}" 
 										 width="${slide.width}" 
 										 height="${slide.height}"
+                                         style="border-width:<?= getOption('Image_passepartout_border')?>px"
 										 class="swiper-lazy"/>
 									<div class="swiper-lazy-preloader"></div>`;
 							if (slide.fullSizeImageUrl) {

@@ -67,7 +67,7 @@ if (!defined('WEBPATH'))
 			<div id="padbox">
 				<?php
                     printGalleryDesc();
-                    $passepartoutBorder = getOption('Passepartout_border');
+                    $passepartoutBorder = getOption('Album_passepartout_border');
                     $galleryMargin = getOption('Gallery_margin') - $passepartoutBorder * 2;
                 ?>
 				<div id="albums">

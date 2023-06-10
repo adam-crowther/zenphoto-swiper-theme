@@ -160,7 +160,7 @@ if (!defined('WEBPATH'))
 
         function createAlbumPassepartout(thumb) {
             return `
-                <div class="passepartout" style="border-width:<?= getOption('Passepartout_border')?>px">
+                <div class="passepartout" style="border-width:<?= getOption('Album_passepartout_border')?>px">
                     <a href="${thumb.albumUrl}"
                        title="View album: ${thumb.albumTitle}">
                        <img src="${thumb.thumbUrl}" width="${thumb.thumbWidth}" height="${thumb.thumbHeight}" alt="${thumb.albumTitle}" loading="lazy"/>
@@ -172,7 +172,7 @@ if (!defined('WEBPATH'))
 
         function createImagePassepartout(thumb) {
             return `
-                <div class="passepartout">
+                <div class="passepartout" style="border-width:<?= getOption('Album_passepartout_border')?>px">
                     <a href="${thumb.imageUrl}"
                        title="${thumb.imageTitle}">
                        <img src="${thumb.thumbUrl}" width="${thumb.thumbWidth}" height="${thumb.thumbHeight}" alt="${thumb.imageTitle}" loading="lazy"/>

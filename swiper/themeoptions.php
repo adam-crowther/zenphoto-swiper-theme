@@ -17,7 +17,8 @@ class ThemeOptions {
 		$me = basename(dirname(__FILE__));
 		setThemeOptionDefault('Allow_search', true);
 		setThemeOptionDefault('Theme_colors', 'light');
-		setThemeOptionDefault('Passepartout_border', 20);
+		setThemeOptionDefault('Album_passepartout_border', 20);
+		setThemeOptionDefault('Image_passepartout_border', 20);
 		setThemeOptionDefault('Gallery_margin', 55);
 		setThemeOptionDefault('albums_per_page', 10000);
 		setThemeOptionDefault('albums_per_row', 10000);
@@ -51,10 +52,14 @@ class ThemeOptions {
 						'key' => 'Theme_colors',
 						'type' => OPTION_TYPE_CUSTOM,
 						'desc' => gettext('Select the colors of the theme.')),
-                gettext('Passepartout border width') => array(
-                    'key' => 'Passepartout_border',
+                gettext('Album Passepartout width') => array(
+                    'key' => 'Album_passepartout_border',
                     'type' => OPTION_TYPE_CUSTOM,
-                    'desc' => gettext('The width of the passepartout around the album thumbnails in px.')),
+                    'desc' => gettext('The width of the passepartout border around the album thumbnails in px.')),
+                gettext('Image Passepartout width') => array(
+                    'key' => 'Image_passepartout_border',
+                    'type' => OPTION_TYPE_CUSTOM,
+                    'desc' => gettext('The width of the passepartout border around the image in px.')),
                 gettext('Gallery margin') => array(
                     'key' => 'Gallery_margin',
                     'type' => OPTION_TYPE_CUSTOM,
@@ -73,8 +78,11 @@ class ThemeOptions {
 			generateListFromArray(array($currentValue), $themecolors, false, false);
 			echo "</select>\n";
 		}
-		if ($option == 'Passepartout_border') {
-            echo "<input type='text' size='3' id='EF_passepartout_border' name='$option' value='$currentValue'>\n";
+		if ($option == 'Album_passepartout_border') {
+            echo "<input type='text' size='3' id='EF_album_passepartout_border' name='$option' value='$currentValue'>\n";
+		}
+		if ($option == 'Image_passepartout_border') {
+            echo "<input type='text' size='3' id='EF_image_passepartout_border' name='$option' value='$currentValue'>\n";
 		}
 		if ($option == 'Gallery_margin') {
             echo "<input type='text' size='3'  id='EF_gallery_margin' name='$option' value='$currentValue'>\n";
