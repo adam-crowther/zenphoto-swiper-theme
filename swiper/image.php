@@ -140,14 +140,16 @@ if (!defined('WEBPATH'))
 						<div id="gallerytitle">
 						
 						<?php
-						if(!zp_loggedin() && $loginlink = zp_apply_filter('login_link', getCustomPageURL('password'))) {
+						if(!zp_loggedin()) {
+                            $currentUrl = html_pathurlencode(getImageURL());
+                            $loginUrl = html_pathurlencode(getCustomPageURL('password', 'from=' . $currentUrl));
+                            $loginlink = zp_apply_filter('login_link', $loginUrl);
 							$logintext = gettext('Login');
-							$currentUrl = html_pathurlencode(getImageURL());
 						?>
 							<div id="login">
 								<input type="button" 
 										class="button buttons"
-										onclick="location.href='<?= $loginlink . '?from=' . $currentUrl; ?>'" 
+										onclick="location.href='<?= $loginlink ?>'"
 										value="<?= $logintext?>" />
 							</div>
 						<?php 

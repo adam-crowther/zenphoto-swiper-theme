@@ -32,8 +32,9 @@ if (!defined('WEBPATH'))
 		<div id="main">
 			<div id="gallerytitle">
 				<?php
-				if(!zp_loggedin() && $loginlink = zp_apply_filter('login_link', getCustomPageURL('password'))) {
-					$logintext = gettext('Login');
+				if(!zp_loggedin()) {
+                    $loginlink = zp_apply_filter('login_link', getCustomPageURL('password'));
+                    $logintext = gettext('Login');
 				?>
 					<div id="login">
 					    <input type="button" 

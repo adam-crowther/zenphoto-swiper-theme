@@ -135,14 +135,16 @@ function printAllDatesAndMonths($class = 'archive', $yearid = 'year', $monthid =
 		<div id="main">
 			<div id="gallerytitle">
 				<?php
-				if(!zp_loggedin() && $loginlink = zp_apply_filter('login_link', getCustomPageURL('password'))) {
+				if(!zp_loggedin()) {
+                    $currentUrl = getCustomPageURL('archive');
+                    $loginUrl = getCustomPageURL('password', 'from=' . $currentUrl);
+                    $loginlink = zp_apply_filter('login_link', $loginUrl);
 					$logintext = gettext('Login');
-					$currentUrl = getCustomPageURL('archive');
 				?>
 					<div id="login">
 					    <input type="button" 
 								class="button buttons"
-								onclick="location.href='<?= $loginlink . '?from=' . $currentUrl; ?>'" 
+								onclick="location.href='<?= $loginlink ?>'"
 								value="<?= $logintext ?>" />
 					</div>
 				<?php 
