@@ -40,7 +40,7 @@ if (!defined('WEBPATH'))
 		
 		$images = $_zp_current_album->getImages(); 
 
-		$currentImage = $_zp_current_image->getFileName();
+		$currentImage = $_zp_current_image->getName();
 		$initialIndex = 0;
 		foreach ($images as $i):
 			if ($i == $currentImage)
@@ -83,19 +83,19 @@ if (!defined('WEBPATH'))
 					slides: [
 						<?php
 							foreach ($images as $i):
-								$image = newImage($_zp_current_album, $i);
+								$image = Image::newImage($_zp_current_album, $i);
 								makeImageCurrent($image);
 								
 								$imageMetaData = json_encode(getImageMetaData());
 																
-								echo '{ fileName: \'' . $_zp_current_image->getFileName() . '\', '
+								echo '{ fileName: \'' . $_zp_current_image->getName() . '\', '
 									. 'imageTitle: \'' . html_encodeTagged(getImageTitle()) . '\', '
 									. 'bareImageTitle: \'' . html_encode(getBareImageTitle()) . '\', '
 									. 'width: ' . getDefaultWidth() . ', '
 									. 'height: ' . getDefaultHeight() . ', '
 									. 'slideUrl: \'' . html_pathurlencode(getImageURL()) . '\', '
 									. 'defaultSizeImageUrl: \'' . pathurlencode(getSizedImageURL(getOption('image_size'))) . '\', '
-									. 'fullSizeImageUrl: ' . (isImagePhoto() && isset($_zp_current_admin_obj) ? '\'' . html_pathurlencode(getFullImageURL()) . '\'' : 'null') . ', '
+									. 'fullSizeImageUrl: ' . ($_zp_current_image->isPhoto() && isset($_zp_current_admin_obj) ? '\'' . html_pathurlencode(getFullImageURL()) . '\'' : 'null') . ', '
 									. 'imageDesc: `' . html_encodeTagged(getImageDesc()) . '`, '
 									. 'metadata: ' . $imageMetaData . ', '
 								. ' }, '
